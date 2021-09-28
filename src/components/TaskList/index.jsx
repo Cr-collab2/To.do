@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Fragment } from "react/cjs/react.production.min"
 import { BsBrightnessHigh } from "react-icons/bs";
 import { BsMoon } from "react-icons/bs";
@@ -26,6 +26,7 @@ export function TaskList({darkMode, setDarkMode}){
     
 
     const [id, setId] = useState(1)
+    // Id que vai se gerado cada vez que criar uma nova tarefa 
 
     const [all , setAll] = useState(true);
     const [completed, setCompleted] = useState(false)
@@ -35,14 +36,17 @@ export function TaskList({darkMode, setDarkMode}){
 
    //  Cria uma nova Tarefa 
     function handleCreateNewTask(){
+        // cria um id novo para usuario 
         setId(Math.floor(Math.random()* 1000))
 
+        //  verifica se o valor digitado pelo usuario é diferente de vazio
         if(newTaskTitle === undefined || newTaskTitle === null || newTaskTitle ===''){
             alert('Digite Sua Tarefa')
             return false
         }
+        
 
-
+        // Cria um objeto  com três valores o id  da tarefa o texto da tarefa e se ela ta completa 
         const itemLists = ()=>{
             return {
                 id: id,
@@ -51,17 +55,24 @@ export function TaskList({darkMode, setDarkMode}){
             }
         }
 
-        var taskNew = [...task]
 
+        //  crio uma variavel para colocar os valores existentes 
+        var taskNew = [...task]
+        
+        // Adiciono um novo valor nessa variavel 
         taskNew.push(itemLists())
 
+        // seto no local storage e no  array de lista um novo array comm valores antigos e os novos 
         localStorage.setItem('@List', JSON.stringify(taskNew))
         setTask(taskNew)
+
+        // zero o inunt do usuario 
         setNewTaskTitle('')
     }
 
    //  Finaliza uma  Tarefa 
      function handleToggleTaskCompletion(id){
+         
          let selectedTask = task.filter((tas)=>{
              return tas.id === id
          })
@@ -74,7 +85,7 @@ export function TaskList({darkMode, setDarkMode}){
 
          
 
-        localStorage.setItem('@List', JSON.stringify([...task]))
+         localStorage.setItem('@List', JSON.stringify([...task]))
          setTask([...task])
          console.log(task)
      }
@@ -93,25 +104,18 @@ export function TaskList({darkMode, setDarkMode}){
         });
      }
 
-
+    //  Remove todas as tasks comletas 
      function removeTaskComplete(){
       const task2 =  task.filter((t,i) =>{ 
      
           return t.isComplete === false    
   
       });
-
-
              localStorage.setItem('@List', JSON.stringify([...task2]))
              setTask([...task2])
      
    }
 
-
-    
-
-  
-   
 
      
    return(
